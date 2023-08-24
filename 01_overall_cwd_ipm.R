@@ -9,7 +9,7 @@
 
 rm(list = ls())
 
-setwd("~/Documents/ipm/cwd_ipm_weekly_ew")
+setwd("~/Documents/ipm/ipm_survival")
 
 library(viridis)
 library(RColorBrewer)
@@ -99,14 +99,15 @@ source("12_prelim_aah.R")
 ###########################################################
 
 # source("13_distributions_check.R")
-source("13_distributions.R")
+# source("13_distributions.R")
 # source("13_distributions_hunt.R")
+source("13_distributions_survival.R")
 
 ###########################################################
 ### Functions for Efficient Calculations
 ###########################################################
 
-source("14_calculations.R")
+# source("14_calculations.R")
 
 ###########################################################
 ### Run model
