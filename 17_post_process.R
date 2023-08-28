@@ -10,10 +10,11 @@
 # out <- mcmc.list(mcmcout)
 # fit_sum <- summarize(out)
 
-fit_sum <- mcmcout$summary
+# fit_sum <- mcmcout$summary
+fit_sum <- mcmcout$summary$all.chains
 out <- mcmcout$samples
 
-modelid <- "D"
+modelid <- "A"
 
 #############################
 ### Saving Model Description
@@ -25,12 +26,12 @@ cat("burnin:  ",bin,"\n")
 cat("n_chains:  ",n_chains,"\n")
 cat("Model Variation:\n")
 cat("allowing beta0_survival_inf and beta0_Survival_sus to be estimated with parameter expansion \n")
-cat("includes aging data aah likelihoods\n")
+# cat("includes aging data aah likelihoods\n")
 cat("removed population model\n")
 cat("removed fecundity model \n")
-cat("includes cause-specific model \n")
+cat("no cause-specific model \n")
 cat("no FOI period effects\n")
-cat("collar only survival period effects, no precollar period effects survival, additive effect of harvest season, time varying step fun\n")
+cat("collar only survival period effects\n")
 cat("includes survival age effects cgam decconvex \n\n")
 cat("runtime:  ", runtime, "\n")
 cat("Summary Stats:  \n")
@@ -44,29 +45,29 @@ sink()
 
 pdf(paste0("figures/",modelid,"/traceplots_",format(Sys.time(),"%y%m%d%m%s"),"_",modelid,".pdf"))
 traceplot(out[, "beta_male"], ylab = "beta_male")
-traceplot(out[, "tau_age_foi_female"], ylab = "tau_age_foi_female")
-traceplot(out[, "tau_age_foi_male"], ylab = "tau_age_foi_male")
-traceplot(out[, "m_age_foi[1]"], ylab = "m_age_foi[1]")
-traceplot(out[, "m_age_foi[2]"], ylab = "m_age_foi[2]")
-traceplot(out[, "m_age_foi[3]"], ylab = "m_age_foi[3]")
-traceplot(out[, "f_age_foi[1]"], ylab = "f_age_foi[1]")
-traceplot(out[, "f_age_foi[2]"], ylab = "f_age_foi[2]")
-traceplot(out[, "f_age_foi[3]"], ylab = "f_age_foi[3]")
-traceplot(out[, "m_period_foi[1]"], ylab = "m_period_foi[1]")
-traceplot(out[, "m_period_foi[2]"], ylab = "m_period_foi[2]")
-traceplot(out[, "m_period_foi[9]"], ylab = "m_period_foi[9]")
-traceplot(out[, "m_period_foi[12]"], ylab = "m_period_foi[12]")
-traceplot(out[, "f_period_foi[1]"], ylab = "f_period_foi[1]")
-traceplot(out[, "f_period_foi[2]"], ylab = "f_period_foi[2]")
-traceplot(out[, "f_period_foi[9]"], ylab = "f_period_foi[9]")
-traceplot(out[, "f_period_foi[12]"], ylab = "f_period_foi[12]")
-traceplot(out[, "tau_period_foi_female"], ylab = "tau_period_foi_female")
-traceplot(out[, "tau_period_foi_male"], ylab = "tau_period_foi_male")
-traceplot(out[, "space[2]"], ylab = "space[2]")
+# traceplot(out[, "tau_age_foi_female"], ylab = "tau_age_foi_female")
+# traceplot(out[, "tau_age_foi_male"], ylab = "tau_age_foi_male")
+# traceplot(out[, "m_age_foi[1]"], ylab = "m_age_foi[1]")
+# traceplot(out[, "m_age_foi[2]"], ylab = "m_age_foi[2]")
+# traceplot(out[, "m_age_foi[3]"], ylab = "m_age_foi[3]")
+# traceplot(out[, "f_age_foi[1]"], ylab = "f_age_foi[1]")
+# traceplot(out[, "f_age_foi[2]"], ylab = "f_age_foi[2]")
+# traceplot(out[, "f_age_foi[3]"], ylab = "f_age_foi[3]")
+# traceplot(out[, "m_period_foi[1]"], ylab = "m_period_foi[1]")
+# traceplot(out[, "m_period_foi[2]"], ylab = "m_period_foi[2]")
+# traceplot(out[, "m_period_foi[9]"], ylab = "m_period_foi[9]")
+# traceplot(out[, "m_period_foi[12]"], ylab = "m_period_foi[12]")
+# traceplot(out[, "f_period_foi[1]"], ylab = "f_period_foi[1]")
+# traceplot(out[, "f_period_foi[2]"], ylab = "f_period_foi[2]")
+# traceplot(out[, "f_period_foi[9]"], ylab = "f_period_foi[9]")
+# traceplot(out[, "f_period_foi[12]"], ylab = "f_period_foi[12]")
+# traceplot(out[, "tau_period_foi_female"], ylab = "tau_period_foi_female")
+# traceplot(out[, "tau_period_foi_male"], ylab = "tau_period_foi_male")
+# traceplot(out[, "space[2]"], ylab = "space[2]")
 # traceplot(out[, "beta0_sus_temp"], ylab = "beta0_sus_temp")
 # traceplot(out[, "beta0_inf_temp"], ylab = "beta0_inf_temp")
 traceplot(out[, "beta0_survival_sus"], ylab = "beta0_survival_sus")
-traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
+# traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
 traceplot(out[, "beta_male"], ylab = "beta_male")
 traceplot(out[, "beta_harvest_gun"], ylab = "beta_harvest_gun")
 traceplot(out[, "beta_harvest_ng"], ylab = "beta_harvest_ng")
@@ -74,73 +75,73 @@ traceplot(out[, "tau_age_survival"], ylab = "tau_age_survival")
 traceplot(out[, "tau_period_survival"], ylab = "tau_period_survival")
 traceplot(out[, "period_survival[1]"], ylab = "period_survival[1]")
 traceplot(out[, "period_survival[2]"], ylab = "period_survival[2]")
-traceplot(out[, "tau_period_precollar"], ylab = "tau_period_precollar")
-traceplot(out[, "beta0_cause"], ylab = "beta0_cause")
-traceplot(out[, "beta_cause_gun"], ylab = "beta_cause_gun")
-traceplot(out[, "beta_cause_ng"], ylab = "beta_cause_ng")
-traceplot(out[, "beta_cause_male"], ylab = "beta_cause_male")
-traceplot(out[, "p_nogun_f"], ylab = "p_nogun_f")
-traceplot(out[, "p_gun_f"], ylab = "p_gun_f")
-traceplot(out[, "p_nogun_m"], ylab = "p_nogun_m")
-traceplot(out[, "p_gun_m"], ylab = "p_gun_m")
-traceplot(out[, "report[10]"], ylab = "report[10]")
-traceplot(out[, "report[25]"], ylab = "report[25]")
-traceplot(out[, "report[27]"], ylab = "report[27]")
-traceplot(out[, "fec[5]"], ylab = "fec[5]")
-traceplot(out[, "fec[10]"], ylab = "fec[10]")
-traceplot(out[, "fec[25]"], ylab = "fec[25]")
-traceplot(out[, "fec[27]"], ylab = "fec[27]")
-traceplot(out[, "fec_prec_eps"], ylab = "fec_prec_eps")
-traceplot(out[, "tau_obs"], ylab = "tau_obs")
-# traceplot(out[, "tau_obs[1]"], ylab = "tau_obs[1]")
-# traceplot(out[, "tau_obs[2]"], ylab = "tau_obs[2]")
-# traceplot(out[, "tau_obs[1, 1]"], ylab = "tau_obs[1, 1]")
-# traceplot(out[, "tau_obs[1, 2]"], ylab = "tau_obs[1, 2]")
-# traceplot(out[, "tau_obs[2, 1]"], ylab = "tau_obs[2, 1]")
-# traceplot(out[, "tau_obs[2, 2]"], ylab = "tau_obs[2, 2]")
-traceplot(out[, "tau_pop"], ylab = "tau_pop")
-# traceplot(out[, "tau_pop[1]"], ylab = "tau_pop[1]")
-# traceplot(out[, "tau_pop[2]"], ylab = "tau_pop[2]")
-# traceplot(out[, "tau_pop[1, 1]"], ylab = "tau_pop[1, 1]")
-# traceplot(out[, "tau_pop[1, 2]"], ylab = "tau_pop[1, 2]")
-# traceplot(out[, "tau_pop[2, 1]"], ylab = "tau_pop[2, 1]")
-# traceplot(out[, "tau_pop[2, 2]"], ylab = "tau_pop[2, 2]")
+# traceplot(out[, "tau_period_precollar"], ylab = "tau_period_precollar")
+# traceplot(out[, "beta0_cause"], ylab = "beta0_cause")
+# traceplot(out[, "beta_cause_gun"], ylab = "beta_cause_gun")
+# traceplot(out[, "beta_cause_ng"], ylab = "beta_cause_ng")
+# traceplot(out[, "beta_cause_male"], ylab = "beta_cause_male")
+# traceplot(out[, "p_nogun_f"], ylab = "p_nogun_f")
+# traceplot(out[, "p_gun_f"], ylab = "p_gun_f")
+# traceplot(out[, "p_nogun_m"], ylab = "p_nogun_m")
+# traceplot(out[, "p_gun_m"], ylab = "p_gun_m")
+# traceplot(out[, "report[10]"], ylab = "report[10]")
+# traceplot(out[, "report[25]"], ylab = "report[25]")
+# traceplot(out[, "report[27]"], ylab = "report[27]")
+# traceplot(out[, "fec[5]"], ylab = "fec[5]")
+# traceplot(out[, "fec[10]"], ylab = "fec[10]")
+# traceplot(out[, "fec[25]"], ylab = "fec[25]")
+# traceplot(out[, "fec[27]"], ylab = "fec[27]")
+# traceplot(out[, "fec_prec_eps"], ylab = "fec_prec_eps")
+# traceplot(out[, "tau_obs"], ylab = "tau_obs")
+# # traceplot(out[, "tau_obs[1]"], ylab = "tau_obs[1]")
+# # traceplot(out[, "tau_obs[2]"], ylab = "tau_obs[2]")
+# # traceplot(out[, "tau_obs[1, 1]"], ylab = "tau_obs[1, 1]")
+# # traceplot(out[, "tau_obs[1, 2]"], ylab = "tau_obs[1, 2]")
+# # traceplot(out[, "tau_obs[2, 1]"], ylab = "tau_obs[2, 1]")
+# # traceplot(out[, "tau_obs[2, 2]"], ylab = "tau_obs[2, 2]")
+# traceplot(out[, "tau_pop"], ylab = "tau_pop")
+# # traceplot(out[, "tau_pop[1]"], ylab = "tau_pop[1]")
+# # traceplot(out[, "tau_pop[2]"], ylab = "tau_pop[2]")
+# # traceplot(out[, "tau_pop[1, 1]"], ylab = "tau_pop[1, 1]")
+# # traceplot(out[, "tau_pop[1, 2]"], ylab = "tau_pop[1, 2]")
+# # traceplot(out[, "tau_pop[2, 1]"], ylab = "tau_pop[2, 1]")
+# # traceplot(out[, "tau_pop[2, 2]"], ylab = "tau_pop[2, 2]")
 dev.off()
 
 png(paste0("figures/",modelid,"/beta0_survival_sus_traceplot_",modelid,".png"))
 traceplot(out[, "beta0_survival_sus"], ylab = "beta0_survival_sus")
 dev.off()
 
-png(paste0("figures/",modelid,"/beta0_survival_inf_traceplot_",modelid,".png"))
-traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
-dev.off()
+# png(paste0("figures/",modelid,"/beta0_survival_inf_traceplot_",modelid,".png"))
+# traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
+# dev.off()
 
-png(paste0("figures/",modelid,"/tau_obs_traceplot_",modelid,".png"))
-traceplot(out[, "tau_obs"], ylab = "tau_obs")
-dev.off()
+# png(paste0("figures/",modelid,"/tau_obs_traceplot_",modelid,".png"))
+# traceplot(out[, "tau_obs"], ylab = "tau_obs")
+# dev.off()
 
-png(paste0("figures/",modelid,"/tau_pop_traceplot_",modelid,".png"))
-traceplot(out[, "tau_pop"], ylab = "tau_pop")
-dev.off()
+# png(paste0("figures/",modelid,"/tau_pop_traceplot_",modelid,".png"))
+# traceplot(out[, "tau_pop"], ylab = "tau_pop")
+# dev.off()
 
 
-pdf(paste0("figures/",modelid,"/traceplot_foi_period_",modelid,".pdf"))
-for(i in 1:n_year){
-    traceplot(out[, paste0("f_period_foi[",i,"]")], ylab = paste0("f_period_foi[",i,"]"))
-}
-for(i in 1:n_year){
-    traceplot(out[, paste0("m_period_foi[",i,"]")], ylab =  paste0("m_period_foi[",i,"]"))
-}
-dev.off()
+# pdf(paste0("figures/",modelid,"/traceplot_foi_period_",modelid,".pdf"))
+# for(i in 1:n_year){
+#     traceplot(out[, paste0("f_period_foi[",i,"]")], ylab = paste0("f_period_foi[",i,"]"))
+# }
+# for(i in 1:n_year){
+#     traceplot(out[, paste0("m_period_foi[",i,"]")], ylab =  paste0("m_period_foi[",i,"]"))
+# }
+# dev.off()
 
-pdf(paste0("figures/",modelid,"/traceplot_foi_age_",modelid,".pdf"))
-for(i in 1:n_ageclassf){
-    traceplot(out[, paste0("f_age_foi[",i,"]")], ylab = paste0("f_age_foi[",i,"]"))
-}
-for(i in 1:n_ageclassm){
-    traceplot(out[, paste0("m_age_foi[",i,"]")], ylab =  paste0("m_age_foi[",i,"]"))
-}
-dev.off()
+# pdf(paste0("figures/",modelid,"/traceplot_foi_age_",modelid,".pdf"))
+# for(i in 1:n_ageclassf){
+#     traceplot(out[, paste0("f_age_foi[",i,"]")], ylab = paste0("f_age_foi[",i,"]"))
+# }
+# for(i in 1:n_ageclassm){
+#     traceplot(out[, paste0("m_age_foi[",i,"]")], ylab =  paste0("m_age_foi[",i,"]"))
+# }
+# dev.off()
 
 
 pdf(paste0("figures/",modelid,"/traceplot_ln_b_age_survival_",modelid,".pdf"))
@@ -306,7 +307,7 @@ ggsave(paste0("figures/",modelid,"/age_effect_",modelid,".png"),age_effect_plot)
 ###############################################
 ###############################################
 
-te_indx <- grep("period_effect",rownames(fit_sum))[(nT_period_precollar_ext + 1):(nT_period_overall_ext)]
+te_indx <- grep("period_effect",rownames(fit_sum))[(1):(nT_period_collar)]
 
 period_effect_mean <- fit_sum[te_indx,1] 
 period_effect_lower <- fit_sum[te_indx,4] 

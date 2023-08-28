@@ -11,16 +11,16 @@ names(d_fit) <- names(d_surv)
 d_fit <- d_fit[order(d_fit$lowtag),]
 d_fit$left_age = d_fit$left_age_e
 d_fit$left_age[d_fit$censored == 0] <- d_fit$right_age_r[d_fit$censored == 0]
-d_fit$left_period <- d_fit$left_period_e
-d_fit$left_period[d_fit$censored == 0] <- d_fit$right_period_r[d_fit$censored == 0]
+d_fit$left_period <- d_fit$left_period_e - nT_period_precollar_ext
+d_fit$left_period[d_fit$censored == 0] <- d_fit$right_period_r[d_fit$censored == 0]- nT_period_precollar_ext
 
 d_fit$right_age <- d_fit$right_age_r
 d_fit$right_age[d_fit$censored == 0] <- d_fit$right_age_s[d_fit$censored == 0]
-d_fit$right_period <- d_fit$right_period_r
-d_fit$right_period[d_fit$censored == 0] <- d_fit$right_period_s[d_fit$censored == 0]
+d_fit$right_period <- d_fit$right_period_r- nT_period_precollar_ext
+d_fit$right_period[d_fit$censored == 0] <- d_fit$right_period_s[d_fit$censored == 0]- nT_period_precollar_ext
 
-d_fit$age2date <- d_fit$right_period - d_fit$left_period
+d_fit$age2date <- d_fit$left_period - d_fit$left_age
 rm <- which(d_fit$lowtag %in% fast & d_fit$censored == 1)
 d_fit <- d_fit[-rm,]
 n_fit <- nrow(d_fit)
-w
+

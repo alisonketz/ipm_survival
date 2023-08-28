@@ -51,7 +51,7 @@ dSurv <- nimbleFunction(
 
 nimble::registerDistributions(list(
     dSurv = list(
-        BUGSdist = "dSurv(x,n_fit,censored,sex,left,right,age_effect,period_effect,age2date,nT_age,beta0,beta_male)",
+        BUGSdist = "dSurv(n_fit,censored,sex,left,right,age2date,age_effect,period_effect,nT_age,beta0,beta_male)",
         types = c(
             "value= integer(0)",
             "n_fit = integer(0)",
@@ -59,9 +59,9 @@ nimble::registerDistributions(list(
             "sex = double(1)",
             "left = double(1)",
             "right = double(1)",
+            "age2date = double(1)",
             "age_effect = double(1)",
             "period_effect = double(1)",
-            "age2date = double(1)",
             "nT_age = double(0)",
             "beta0 = double(0)",
             "beta_male = double(0)",
@@ -76,22 +76,33 @@ assign("dSurv",
     dSurv,
     envir = .GlobalEnv
 )
+# `
+#   test <- dSurv(n_fit = n_fit,
+#                  censored = d_fit$censored,
+#                  sex = d_fit$sex,
+#                  left = d_fit$left_age,
+#                  right = d_fit$right_age,
+#                  age2date = d_fit$age2date,
+#                  age_effect = rep(0,nT_age_surv),
+#                  period_effect = rep(0,nT_period_collar),
+#                  nT_age = nT_age_surv,
+#                  beta0 = rnorm(1,-5,.1),
+#                  beta_male = .25,log=TRUE)
 
-  test <- dSurv(n_fit = n_fit,
-                 censored = d_fit$censored,
-                 sex = d_fit$sex,
-                 left = d_fit$left_age,
-                 right = d_fit$right_age,
-                 age_effect = rep(0,nT_age_surv),
-                 period_effect = rep(0,nT_period_collar),
-                 age2date = age2date[1:n_fit],
-                 nT_age = nT_age_surv,
-                 beta0 = rnorm(1,-5,.1),
-                 beta_male = .25)
+                #  censored = d_fit$censored
+                #  sex = d_fit$sex
+                #  left = d_fit$left_age
+                #  right = d_fit$right_age
+                #  age2date = d_fit$age2date
+                #  age_effect = rep(0,nT_age_surv)
+                #  period_effect = rep(0,nT_period_collar)
+                #  nT_age = nT_age_surv
+                #  beta0 = rnorm(1,-5,.1)
+                #  beta_male = .25
 
 
 # #######################################################################
-# ###
+# ###`
 # ###   Likelihoods for each kind of data listed below
 # ###
 # #######################################################################
