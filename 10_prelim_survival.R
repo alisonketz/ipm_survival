@@ -81,14 +81,14 @@ endlive_age2date <- d_fit_endlive$left_period_e - d_fit_endlive$left_age_e
 ###
 #############################################
 
-intvl_period <- 13
-knots_period <- seq(1,nT_period_collar, by = intvl_period)
-splinebasis <- bs(1:nT_period_collar, knots = knots_period)
-constr_sumzero <- matrix(1, 1, nrow(splinebasis)) %*% splinebasis
-qrc <- qr(t(constr_sumzero))
-Z <- qr.Q(qrc,complete=TRUE)[,(nrow(constr_sumzero)+1):ncol(constr_sumzero)]
-Z_period <- splinebasis%*%Z
-nknots_period <- dim(Z_period)[2]
+# intvl_period <- 13
+# knots_period <- seq(1,nT_period_collar, by = intvl_period)
+# splinebasis <- bs(1:nT_period_collar, knots = knots_period)
+# constr_sumzero <- matrix(1, 1, nrow(splinebasis)) %*% splinebasis
+# qrc <- qr(t(constr_sumzero))
+# Z <- qr.Q(qrc,complete=TRUE)[,(nrow(constr_sumzero)+1):ncol(constr_sumzero)]
+# Z_period <- splinebasis%*%Z
+# nknots_period <- dim(Z_period)[2]
 
 
 # pdf("figures/basis_function_time_bs.pdf")
@@ -193,32 +193,32 @@ decconvex=function(x,t)
 ### Caculating the basis expansion CONVEX
 ##############################################################
 
-quant_age <- .2
-knots_age <- c(1, round(quantile(d_surv$right_age_r,
-                       c(seq(quant_age, .99, by = quant_age),
-                       .99))))
-knots_age <- unique(knots_age)
-delta_i <- convex(1:nT_age_surv, knots_age, pred.new = FALSE)
-delta <- t(rbind(delta_i$sigma - 
-                t(delta_i$x.mat %*%
-                delta_i$center.vector)))
-delta <- delta / max(delta)
-Z_age <- delta
-nknots_age <- dim(Z_age)[2]
-
-##############################################################
-### Caculating the basis expansion CONVEX DECREASING
-##############################################################
-
 # quant_age <- .2
 # knots_age <- c(1, round(quantile(d_surv$right_age_r,
 #                        c(seq(quant_age, .99, by = quant_age),
 #                        .99))))
 # knots_age <- unique(knots_age)
-# delta_i <- decconvex(1:nT_age_surv, knots_age)
-# delta <- t(delta_i$sigma - delta_i$center.vector)
-# Z_age <- delta / max(delta)
+# delta_i <- convex(1:nT_age_surv, knots_age, pred.new = FALSE)
+# delta <- t(rbind(delta_i$sigma - 
+#                 t(delta_i$x.mat %*%
+#                 delta_i$center.vector)))
+# delta <- delta / max(delta)
+# Z_age <- delta
 # nknots_age <- dim(Z_age)[2]
+
+##############################################################
+### Caculating the basis expansion CONVEX DECREASING
+##############################################################
+
+quant_age <- .2
+knots_age <- c(1, round(quantile(d_surv$right_age_r,
+                       c(seq(quant_age, .99, by = quant_age),
+                       .99))))
+knots_age <- unique(knots_age)
+delta_i <- decconvex(1:nT_age_surv, knots_age)
+delta <- t(delta_i$sigma - delta_i$center.vector)
+Z_age <- delta / max(delta)
+nknots_age <- dim(Z_age)[2]
 
 
 # #############################################################
@@ -246,44 +246,44 @@ nknots_age <- dim(Z_age)[2]
 ###
 #################################################################
 
-# kernel_conv <- nimbleFunction(
-#   run = function(nT = double(0),
-#                  Z = double(2),
-#                  stauk = double(0),
-#                  nconst = double(0),
-#                  tauk = double(0),
-#                  nknots = double(0),
-#                  alphau = double(1)
-#   ){
-#     temp <- nimMatrix(value = 0, nrow = nT, ncol = nknots)
-#     temp1 <- nimMatrix(value = 0, nrow = nT, ncol = nknots)
-#     temp2 <- nimNumeric(nknots)
-#     KA <- nimNumeric(nT)
+kernel_conv <- nimbleFunction(
+  run = function(nT = double(0),
+                 Z = double(2),
+                 stauk = double(0),
+                 nconst = double(0),
+                 tauk = double(0),
+                 nknots = double(0),
+                 alphau = double(1)
+  ){
+    temp <- nimMatrix(value = 0, nrow = nT, ncol = nknots)
+    temp1 <- nimMatrix(value = 0, nrow = nT, ncol = nknots)
+    temp2 <- nimNumeric(nknots)
+    KA <- nimNumeric(nT)
 
-#     for (i in 1:nT) {
-#       for (j in 1:nknots) {
-#         temp1[i, j] <- stauk * nconst * exp(-0.5 * Z[i, j]^2 * tauk)
-#       }
-#     }
+    for (i in 1:nT) {
+      for (j in 1:nknots) {
+        temp1[i, j] <- stauk * nconst * exp(-0.5 * Z[i, j]^2 * tauk)
+      }
+    }
 
-#     for (j in 1:nknots) {
-#       temp2[j] <- sum(temp1[1:nT, j])
-#     }
+    for (j in 1:nknots) {
+      temp2[j] <- sum(temp1[1:nT, j])
+    }
 
-#     for (i in 1:nT) {
-#       for (j in 1:nknots) {
-#         temp[i, j] <- (temp1[i, j] / temp2[j]) * alphau[j]
-#       }
-#       KA[i] <- sum(temp[i, 1:nknots])
-#     }
-#     muKA <- mean(KA[1:nT])
-#     KA[1:nT] <- KA[1:nT] - muKA
+    for (i in 1:nT) {
+      for (j in 1:nknots) {
+        temp[i, j] <- (temp1[i, j] / temp2[j]) * alphau[j]
+      }
+      KA[i] <- sum(temp[i, 1:nknots])
+    }
+    muKA <- mean(KA[1:nT])
+    KA[1:nT] <- KA[1:nT] - muKA
 
-#     returnType(double(1))
-#     return(KA[1:nT])
-#   })
+    returnType(double(1))
+    return(KA[1:nT])
+  })
 
-# Ckernel_conv <- compileNimble(kernel_conv)
+Ckernel_conv <- compileNimble(kernel_conv)
 
 
 #########################################
@@ -293,20 +293,20 @@ nknots_age <- dim(Z_age)[2]
 ###
 #########################################
 
-# intvl_period <- 1
-# knots_period <- c(seq(1,
-#                       nT_period_collar,
-#                       by = intvl_period),
-#                 nT_period_collar)
-# knots_period <- unique(knots_period)
-# nknots_period <- length(knots_period)
+intvl_period <- 2
+knots_period <- c(seq(1,
+                      nT_period_collar,
+                      by = intvl_period),
+                nT_period_collar)
+knots_period <- unique(knots_period)
+nknots_period <- length(knots_period)
 
-# Z_period <- matrix(0, nT_period_collar, nknots_period)
-# for (i in 1:nrow(Z_period)) {
-#   for (j in 1:nknots_period) {
-#     Z_period[i, j] <- abs(i - knots_period[j])
-#   }
-# }
+Z_period <- matrix(0, nT_period_collar, nknots_period)
+for (i in 1:nrow(Z_period)) {
+  for (j in 1:nknots_period) {
+    Z_period[i, j] <- abs(i - knots_period[j])
+  }
+}
 
 
 #############################################################

@@ -222,21 +222,51 @@ modelcode <- nimbleCode({
   ### Priors for Period Effects Survival
   ########################################
 
-  ### Period effects from collar data
-  for (k in 1:nknots_period) {
-    b_period_survival[k] ~ dnorm(0, tau_period_survival)
-  }
-  tau_period_survival ~ dgamma(1, 1)
-  for (t in 1:nT_period_collar) {
-    period_effect_surv[t] <- inprod(b_period_survival[1:nknots_period],
-                                    Z_period[t, 1:nknots_period]) +
-                              Z_collar_gun[t] * beta_harvest_gun +
-                              Z_collar_ng[t] * beta_harvest_ng
-  }
+  # ### Period effects from collar data
+  # for (k in 1:nknots_period) {
+  #   b_period_survival[k] ~ dnorm(0, tau_period_survival)
+  # }
+  # tau_period_survival ~ dgamma(1, 1)
+  # for (t in 1:nT_period_collar) {
+  #   period_effect_surv[t] <- inprod(b_period_survival[1:nknots_period],
+  #                                   Z_period[t, 1:nknots_period]) +
+  #                             Z_collar_gun[t] * beta_harvest_gun +
+  #                             Z_collar_ng[t] * beta_harvest_ng
+  # }
 
   #additive effect of harvest on total mortality hazard
   beta_harvest_gun ~ dnorm(0, .1)
   beta_harvest_ng ~ dnorm(0, .1)
+
+  #Period effects
+  mix_survival ~ dunif(-1, 1)
+  ln_sk_period ~ dnorm(0, sd = 1)
+  sdk_period <- exp(mix_survival * ln_sk_period)
+  tauk_period <- 1 / sdk_period^2
+  stauk_period <- sqrt(tauk_period)
+  sda_period ~ T(dnorm(0, sd = 1), 0, Inf)#<- 1/sqrt(taua_period)
+  taua_period <- 1 / sda_period^2
+  for (i in 1:(nknots_period)) {
+    alpha_period[i] ~ dnorm(0, 1)
+    alphau_period[i] <- sda_period * alpha_period[i]
+  }
+  ratioinf_period <- sdk_period / sda_period #ratio of variability
+
+  period_effect[1:nT_period_collar] <- kernel_conv(
+    nT = nT_period_collar,
+    Z = Z_period[1:nT_period_collar, 1:nknots_period],
+    stauk = stauk_period,
+    nconst = nconst,
+    tauk = tauk_period,
+    nknots = nknots_period,
+    alphau = alphau_period[1:nknots_period]
+  )
+
+  for (t in 1:nT_period_collar) {
+    period_effect_surv[t] <- period_effect[t] +
+                              Z_collar_gun[t] * beta_harvest_gun +
+                              Z_collar_ng[t] * beta_harvest_ng
+  }
 
   #######################################################################
   ###
