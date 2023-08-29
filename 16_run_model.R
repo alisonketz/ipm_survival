@@ -395,7 +395,7 @@ CnimMCMC <- compileNimble(nimMCMC,
 for(i in 1:10){beepr::beep(1)}
 
 reps <- 10000
-bin <- reps*.5
+bin <- reps * .5
 n_chains <- 3
 
 set.seed(1001)
