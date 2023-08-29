@@ -179,6 +179,16 @@ modelcode <- nimbleCode({
   sus_mix ~ dunif(-1, 1)
   beta0_survival_sus <- beta0_sus_temp * sus_mix
 
+  ##################################
+  ### Infected survival intercept
+  ##################################
+
+  # beta0_survival_inf ~ dnorm(0, .1)
+  # beta0_survival_inf ~ T(dnorm(-6, .1),,0)
+  beta0_inf_temp ~ dnorm(0, .1)
+  inf_mix ~ dunif(-1, 1)
+  beta0_survival_inf <- beta0_inf_temp * inf_mix
+
   ####################################
   ### Sex-specific survival
   ####################################
@@ -273,21 +283,43 @@ modelcode <- nimbleCode({
   ###   User defined distribution for likelihood for
   ###   all collar deer survival
   ###
-  ###   d_surv
+  ###   d_surv_neg
   ###
   #######################################################################
 
-  y_fit_surv ~ dSurv(n_fit = n_fit,
-                 censored = fit_surv_censored[1:n_fit],
-                 sex = fit_surv_sex[1:n_fit],
-                 left = fit_surv_left[1:n_fit],
-                 right = fit_surv_right[1:n_fit],
-                 age2date = fit_surv_age2date[1:n_fit],
+  y_fit_surv ~ dSurv(n_fit = n_fit_neg,
+                 censored = fit_surv_neg_censored[1:n_fit],
+                 sex = fit_surv_neg_sex[1:n_fit],
+                 left = fit_surv_neg_left[1:n_fit],
+                 right = fit_surv_neg_right[1:n_fit],
+                 age2date = fit_surv_neg_age2date[1:n_fit],
                  age_effect = age_effect_survival[1:nT_age_surv],
                  period_effect = period_effect_surv[1:nT_period_collar],
                  nT_age = nT_age_surv,
                  beta0 = beta0_survival_sus,
                  beta_male = beta_male)
+
+  #######################################################################
+  ###
+  ###   User defined distribution for likelihood for
+  ###   all collar deer survival
+  ###
+  ###   d_surv_pos
+  ###
+  #######################################################################
+
+  y_fit_surv ~ dSurv(n_fit = n_fit_pos,
+                 censored = fit_surv_pos_censored[1:n_fit],
+                 sex = fit_surv_pos_sex[1:n_fit],
+                 left = fit_surv_pos_left[1:n_fit],
+                 right = fit_surv_pos_right[1:n_fit],
+                 age2date = fit_surv_pos_age2date[1:n_fit],
+                 age_effect = age_effect_survival[1:nT_age_surv],
+                 period_effect = period_effect_surv[1:nT_period_collar],
+                 nT_age = nT_age_surv,
+                 beta0 = beta0_survival_inf,
+                 beta_male = beta_male)
+
 
   # ### Period effects from aah data
   # tau_period_precollar ~ dgamma(1,1)

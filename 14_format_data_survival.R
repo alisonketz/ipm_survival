@@ -24,3 +24,18 @@ rm <- which(d_fit$lowtag %in% fast & d_fit$censored == 1)
 d_fit <- d_fit[-rm,]
 n_fit <- nrow(d_fit)
 
+
+head(d_fit)
+sum(d_surv$cwd_mort,na.rm=TRUE)
+head(d_surv[which(d_surv$cwd_mort == 1),])
+length(which(d_surv$cwd_mort == 1))
+
+sum(d_surv$cwd_cap,na.rm=TRUE)
+d_surv$cwd_cap[which(is.na(d_surv$cwd_mort))]
+d_surv$cwd_cap[which(d_surv$cwd_mort == 1)]
+
+low_pos_mort <- d_surv$lowtag[which(d_surv$cwd_mort == 1)]
+d_fit_pos <- d_fit[d_fit$lowtag %in% low_pos_mort,]
+n_fit_pos <- nrow(d_fit_pos)
+d_fit_neg <- d_fit[!(d_fit$lowtag %in% low_pos_mort),]
+n_fit_neg <- nrow(d_fit_neg)
