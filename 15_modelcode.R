@@ -287,12 +287,12 @@ modelcode <- nimbleCode({
   ###
   #######################################################################
 
-  y_fit_surv ~ dSurv(n_fit = n_fit_neg,
-                 censored = fit_surv_neg_censored[1:n_fit],
-                 sex = fit_surv_neg_sex[1:n_fit],
-                 left = fit_surv_neg_left[1:n_fit],
-                 right = fit_surv_neg_right[1:n_fit],
-                 age2date = fit_surv_neg_age2date[1:n_fit],
+  y_fit_surv_neg ~ dSurv(n_fit = n_fit_neg,
+                 censored = fit_surv_neg_censored[1:n_fit_neg],
+                 sex = fit_surv_neg_sex[1:n_fit_neg],
+                 left = fit_surv_neg_left[1:n_fit_neg],
+                 right = fit_surv_neg_right[1:n_fit_neg],
+                 age2date = fit_surv_neg_age2date[1:n_fit_neg],
                  age_effect = age_effect_survival[1:nT_age_surv],
                  period_effect = period_effect_surv[1:nT_period_collar],
                  nT_age = nT_age_surv,
@@ -308,12 +308,12 @@ modelcode <- nimbleCode({
   ###
   #######################################################################
 
-  y_fit_surv ~ dSurv(n_fit = n_fit_pos,
-                 censored = fit_surv_pos_censored[1:n_fit],
-                 sex = fit_surv_pos_sex[1:n_fit],
-                 left = fit_surv_pos_left[1:n_fit],
-                 right = fit_surv_pos_right[1:n_fit],
-                 age2date = fit_surv_pos_age2date[1:n_fit],
+  y_fit_surv_pos ~ dSurv(n_fit = n_fit_pos,
+                 censored = fit_surv_pos_censored[1:n_fit_pos],
+                 sex = fit_surv_pos_sex[1:n_fit_pos],
+                 left = fit_surv_pos_left[1:n_fit_pos],
+                 right = fit_surv_pos_right[1:n_fit_pos],
+                 age2date = fit_surv_pos_age2date[1:n_fit_pos],
                  age_effect = age_effect_survival[1:nT_age_surv],
                  period_effect = period_effect_surv[1:nT_period_collar],
                  nT_age = nT_age_surv,
