@@ -5,7 +5,7 @@
 ###############################################################################################
 
 # source("summarize.R")
-# load("mcmcout.Rdata")
+# load("results/mcmcout.Rdata")
 # load("runtime.Rdata")
 # out <- mcmc.list(mcmcout)
 # fit_sum <- summarize(out)
@@ -14,7 +14,7 @@
 fit_sum <- mcmcout$summary$all.chains
 out <- mcmcout$samples
 
-modelid <- "B"
+modelid <- "D"
 
 #############################
 ### Saving Model Description
