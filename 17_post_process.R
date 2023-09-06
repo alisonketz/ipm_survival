@@ -14,7 +14,7 @@
 fit_sum <- mcmcout$summary$all.chains
 out <- mcmcout$samples
 
-modelid <- "D"
+modelid <- "E"
 
 #############################
 ### Saving Model Description
@@ -67,7 +67,7 @@ traceplot(out[, "beta_male"], ylab = "beta_male")
 # traceplot(out[, "beta0_sus_temp"], ylab = "beta0_sus_temp")
 # traceplot(out[, "beta0_inf_temp"], ylab = "beta0_inf_temp")
 traceplot(out[, "beta0_survival_sus"], ylab = "beta0_survival_sus")
-# traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
+traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
 traceplot(out[, "beta_male"], ylab = "beta_male")
 traceplot(out[, "beta_harvest_gun"], ylab = "beta_harvest_gun")
 traceplot(out[, "beta_harvest_ng"], ylab = "beta_harvest_ng")
@@ -112,9 +112,17 @@ png(paste0("figures/",modelid,"/beta0_survival_sus_traceplot_",modelid,".png"))
 traceplot(out[, "beta0_survival_sus"], ylab = "beta0_survival_sus")
 dev.off()
 
-# png(paste0("figures/",modelid,"/beta0_survival_inf_traceplot_",modelid,".png"))
-# traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
-# dev.off()
+png(paste0("figures/",modelid,"/beta0_survival_inf_traceplot_",modelid,".png"))
+traceplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
+dev.off()
+
+png(paste0("figures/",modelid,"/beta0_survival_sus_densityplot_",modelid,".png"))
+densityplot(out[, "beta0_survival_sus"], ylab = "beta0_survival_sus")
+dev.off()
+
+png(paste0("figures/",modelid,"/beta0_survival_inf_densityplot_",modelid,".png"))
+densityplot(out[, "beta0_survival_inf"], ylab = "beta0_survival_inf")
+dev.off()
 
 # png(paste0("figures/",modelid,"/tau_obs_traceplot_",modelid,".png"))
 # traceplot(out[, "tau_obs"], ylab = "tau_obs")
@@ -333,6 +341,8 @@ period_effect_plot
 # ggsave("figures/period_effect_inf_int.pdf",period_effect_plot_inf_int)
 ggsave(paste0("figures/",modelid,"/period_effects_",modelid,".png"),period_effect_plot)
 
+
+save(mcmcout,file = paste0("results/mcmcout_", modelid, ".Rdata"))
 
 # ##########################################################
 # #plots from the second iteration of the mcmc
