@@ -14,7 +14,7 @@
 fit_sum <- mcmcout$summary$all.chains
 out <- mcmcout$samples
 
-modelid <- "E"
+modelid <- "F"
 
 #############################
 ### Saving Model Description

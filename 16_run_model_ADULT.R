@@ -6,6 +6,10 @@ d_fit_pos <- d_fit_pos[!(d_fit_pos$lowtag %in% neonate_lowtag),]
 n_fit_neg <- nrow(d_fit_neg)
 n_fit_pos <- nrow(d_fit_pos)
 
+
+
+
+
 #######################################
 ### Data for Model Fitting
 #######################################
@@ -245,7 +249,8 @@ initsFun <- function()list(beta_male = rnorm(1, -.2, .01),
     beta0_inf_temp = rnorm(1, -3, 0.0001),
     # beta0_survival_inf = rnorm(1, -8, 0.0001),
     inf_mix = 1,
-    ln_b_age_survival = rnorm(nknots_age) * 10^-4,
+    # ln_b_age_survival = rnorm(nknots_age) * 10^-4,
+    b_age_survival = rnorm(nknots_age) * 10^-4,
     tau_age_survival = runif(1, .1, 1),
     # b_period_survival = rnorm(nknots_period) * 10^-4,
     # tau_period_survival = runif(1, .1, 1),
@@ -402,7 +407,7 @@ CnimMCMC <- compileNimble(nimMCMC,
                          project = Rmodel)
 for(i in 1:10){beepr::beep(1)}
 
-reps <- 10000
+reps <- 5000
 bin <- reps * .5
 n_chains <- 3
 
@@ -578,5 +583,6 @@ for (i in 1:10) {beepr::beep(1)}
 # ### save model run
 # ###
 
-# # save(runtime,file="results/runtime.Rdata")
-# # save(mcmcout,file="results/mcmcout.Rdata")
+# modelid <- "F"
+# save(runtime,file="results/runtime.Rdata")
+# save(mcmcout,file = paste0("results/mcmcout_",modelid,".Rdata"))

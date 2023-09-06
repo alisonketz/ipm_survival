@@ -115,7 +115,8 @@ source("14_format_data_survival.R")
 ### Run model
 ###########################################################
 
-source("15_modelcode.R")
+# source("15_modelcode.R")
+source("15_modelcode_ADULT.R")
 
 ###########################################################
 ### Run model

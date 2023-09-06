@@ -66,11 +66,11 @@ endlive_age2date <- d_fit_endlive$left_period_e - d_fit_endlive$left_age_e
 ####################################
 
 quant_age <- .05
-knots_age <- unique(c(1,round(quantile(d_surv$right_age_r,
+knots_age <- unique(c(53,round(quantile(d_surv$right_age_r[d_surv$left_age_e > 52],
                               c(seq(quant_age, .99, by = quant_age),
                               .99)))))
 nknots_age <- length(knots_age)
-splinebasis <- ns(1:nT_age_surv, knots = knots_age)#,intercept=TRUE,
+splinebasis <- ns(53:nT_age_surv, knots = knots_age)#,intercept=TRUE,
 constr_sumzero <- matrix(1, 1, nrow(splinebasis)) %*% splinebasis
 qrc <- qr(t(constr_sumzero))
 Z <- qr.Q(qrc,complete = TRUE)[,(nrow(constr_sumzero)+1):
